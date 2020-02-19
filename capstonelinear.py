@@ -1,5 +1,5 @@
 import pandas as pd
-#import seaborn as sns
+import seaborn as sns
 import numpy as np
 import glob, os
 
@@ -33,7 +33,7 @@ from sklearn.model_selection import train_test_split
 
 pd.set_option('display.max_rows', 100)
 #np.set.printoptions(prediction = 4)
-pd.set_option('display.max_colwidth', None)
+#pd.set_option('display.max_colwidth', -1)
 
 
 # In[2]:
@@ -74,7 +74,7 @@ result = pd.DataFrame()
 for  fname in  glob.glob(path):
     head, tail = os.path.split(fname)
     df = pd.read_csv(fname, sep = ',')
-    df3 = df.sort_values(by=['REF_DATE'], ascending = True).drop(['DGUID', 'SCALAR_ID'], axis =1)
+    df3 = df.sort_values(by=['REF_DATE'], ascending = True).drop(['DGUID'], axis =1)
     df3['channel']= tail
     result = pd.concat([result, df3])
 
@@ -82,7 +82,7 @@ for  fname in  glob.glob(path):
 # In[7]:
 
 
-df1 = result.drop(['UOM_ID','SCALAR_FACTOR', 'VECTOR', 'STATUS','COORDINATE','SYMBOL', 'TERMINATED', 'DECIMALS', 'channel'], axis = 1)
+df1 = result.drop(['VECTOR', 'STATUS','COORDINATE','SYMBOL', 'TERMINATED', 'DECIMALS', 'channel'], axis = 1)
 
 
 # In[8]:
@@ -112,7 +112,7 @@ df1 = df1[df1.UOM =='Persons']
 # In[12]:
 
 
-df1 = df1.drop(['REF_DATE','Wages','GEO', 'UOM'], axis = 1)
+df1 = df1.drop(['REF_DATE','Wages','GEO', 'UOM', 'UOM_ID', 'SCALAR_FACTOR', 'SCALAR_ID'], axis = 1)
 
 
 # In[13]:
@@ -153,37 +153,37 @@ df1 = df1[df1.age_group != '15 years and over']
 df1['value'] = df1['value'].fillna((df1['value'].mean()))
 
 
-# In[19]:
+# In[ ]:
 
 
 #df1['value']
 
 
-# In[20]:
+# In[19]:
 
 
 df1['gender'] = df1['gender'].apply({'Females': 1, 'Males': 0}.get)
 
 
-# In[21]:
+# In[20]:
 
 
 df1['gender'].value_counts()
 
 
+# In[21]:
+
+
+sns.lmplot(x='gender', y='value', data=df1)
+
+
 # In[22]:
-
-
-#sns.lmplot(x='gender', y='value', data=df1)
-
-
-# In[23]:
 
 
 df1['value'].isnull().sum()
 
 
-# In[24]:
+# In[23]:
 
 
 target = 'value'
@@ -191,31 +191,31 @@ y = df1[target]
 X = df1.drop(target, axis = 1)
 
 
-# In[25]:
+# In[24]:
 
 
 X.info()
 
 
-# In[26]:
+# In[25]:
 
 
 X_train, X_test, y_train, y_test = train_test_split(X,y, test_size = 0.3, random_state = 42)
 
 
-# In[27]:
+# In[ ]:
 
 
 y_train
 
 
-# In[28]:
+# In[ ]:
 
 
 y_train
 
 
-# In[29]:
+# In[26]:
 
 
 le = preprocessing.LabelEncoder()
@@ -233,7 +233,7 @@ le.fit(X_train['gender'])
 le.fit(X_test['gender'])
 
 
-# In[30]:
+# In[27]:
 
 
 mapper = DataFrameMapper([
@@ -244,67 +244,67 @@ mapper = DataFrameMapper([
     ], df_out= True)
 
 
-# In[31]:
+# In[ ]:
 
 
 mapper
 
 
-# In[32]:
+# In[28]:
 
 
 Z_train= mapper.fit(X_train)
 
 
-# In[33]:
+# In[29]:
 
 
 Z_train= mapper.transform(X_train)
 
 
-# In[34]:
+# In[ ]:
 
 
 Z_train
 
 
-# In[35]:
+# In[30]:
 
 
 Z_test = mapper.transform(X_test)
 
 
-# In[36]:
+# In[ ]:
 
 
 Z_test
 
 
-# In[41]:
+# In[31]:
 
 
-model = LinearRegression(normalize=False)
+model = LinearRegression()
 
 
-# In[42]:
+# In[32]:
 
 
 model.fit(Z_train, y_train)
 
 
-# In[43]:
+# In[33]:
 
 
 y_pred = model.predict(Z_test)
 
 
-# In[44]:
+# In[ ]:
 
 
 y_pred
 
 
-# In[45]:
+# In[34]:
 
 
 from sklearn.metrics import mean_squared_error, r2_score
@@ -322,49 +322,49 @@ def rmse_score(model, Z_train, Z_test, y_train, y_test):
     return (rmse_train, rmse_test)
 
 
-# In[46]:
+# In[35]:
 
 
 rmse_score(model, Z_train, Z_test, y_train, y_test)
 
 
-# In[47]:
+# In[ ]:
 
 
 y_test
 
 
-# In[48]:
+# In[ ]:
 
 
 y_pred
 
 
-# In[49]:
+# In[36]:
 
 
 r2_score(y_test, y_pred)
 
 
-# In[50]:
+# In[ ]:
 
 
 Z_test.shape
 
 
-# In[51]:
+# In[ ]:
 
 
 y_test.size
 
 
-# In[52]:
+# In[ ]:
 
 
 y_pred.size
 
 
-# In[53]:
+# In[37]:
 
 
 knn_reg = KNeighborsRegressor()
@@ -373,7 +373,7 @@ knn_reg.fit(Z_train, y_train)
 rmse_score(knn_reg, Z_train, Z_test, y_train, y_test)
 
 
-# In[54]:
+# In[38]:
 
 
 cart_reg = DecisionTreeRegressor()
@@ -382,7 +382,7 @@ cart_reg.fit(Z_train, y_train)
 rmse_score(cart_reg, Z_train, Z_test, y_train, y_test)
 
 
-# In[55]:
+# In[39]:
 
 
 bagged_reg = BaggingRegressor()
@@ -393,7 +393,7 @@ rmse_score(bagged_reg, Z_train, Z_test, y_train, y_test)
 
 
 
-# In[56]:
+# In[40]:
 
 
 adaboost_reg = AdaBoostRegressor()
@@ -402,7 +402,7 @@ adaboost_reg.fit(Z_train, y_train)
 rmse_score(adaboost_reg, Z_train, Z_test, y_train, y_test)
 
 
-# In[57]:
+# In[41]:
 
 
 support_vector_reg = SVR()
@@ -411,32 +411,32 @@ support_vector_reg.fit(Z_train, y_train)
 rmse_score(support_vector_reg, Z_train, Z_test, y_train, y_test)
 
 
-# In[58]:
+# In[42]:
 
 
 pipe = Pipeline([("mapper", mapper), ("model", model)])
 pipe.fit(X_train, y_train)
 
 
-# In[59]:
+# In[43]:
 
 
-employed_value = pipe.predict(X_test)
+#employed_value = pipe.predict(X_test)
 
 
-# In[60]:
+# In[44]:
 
 
-employed_value = (np.round(employed_value, 1)).astype('int')
+#employed_value = (np.round(employed_value, 1)).astype('int')
 
 
-# In[61]:
+# In[45]:
 
 
-employed_value
+#employed_value
 
 
-# In[62]:
+# In[46]:
 
 
 pickle.dump(pipe, open('pipe.pkl', 'wb'))

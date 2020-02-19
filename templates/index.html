@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <title>Canadian Employment</title>
-     <link rel="stylesheet" type="text/css" href="static/style.css">
-      </head>
-          <body>
-            <h1 align="center"  style="font-size:50px;" >Canadian employment by category</h1>
-              <div class="twosides">
-                <div class="leftside">
-                  <img src="static/Toronto.mp4"  style="width:auto;height:350px;" align="center" hspace="70" vspace="35"/>
-                    <br><br/>
-                      </div>
-                  <div class="rightside">
-                <form action = "/result" method="POST" >
-              <h4>Enter Occupation to see number of employed people <br/></h4>
-            <p>National Occupational Classification (NOC):
+     <link rel="icon" href="data:,">
+     <link rel="stylesheet" href= "{{url_for('static', filename = 'css/bootstrap.css')}}">
+      <title>Canadian Employment</title>
+
+  </head>
+
+        <div class="header">
+            <h1 align="center"  style="color: rgba(0, 0, 139, 1);" >Canadian employment by category</h1>
+            <img src="static/img/Toronto.jpg"  width="100%" height="345">
+        </div>
+
+
+        <div class="contentcontainer med left" style="margin-left: 200px;">
+          <form action = "/result" method="POST" >
+
+              <h4>Enter Data to see number of employed people <br/></h4>
+            <p>National Occupational Classification (NOC): <br>
               <select name="occupation" style="font-family: candara;" required>
               <option value="Management occupations">Management</option>
               <option value="Senior management occupations">Senior management</option>
@@ -66,28 +69,39 @@
               <option value="Assemblers in manufacturing">Assemblers in manufacturing</option>
               <option value="Labourers in processing, manufacturing and utilities">Labourers in processing, manufacturing and utilities</option>
             </select></p>
-                          <p>Age group(1 - 15 - 24 years old, 2 - 25-55 years old, 3 - over 55 years old ):<input name="age_group" required type="number" placeholder="4"
-                            style ="font-family: candara; width:10%; padding: 5px 8px;margin: 5px 0; box-sizing: border-box;">
-                          </p>
-                          <p>Gender:<br>
-                              <input type="radio" name="gender" id="Female" value="True" required/>
-                              <label style="font-size: 13px; font-family:candara;">1</label><br />
-                              <input type="radio" name="gender" id="Male" value="False" required/>
-                              <label style="font-size: 13px;font-family:candara;">0</label><br />
-                            </p>
-                           <p>Type of work:
-                                <select name="fulltime_parttime" style="font-family: candara;">
-                                  <option value = "fulltime_parttime">Fulltime</option>
-                                  <option value = "fulltime_parttime">Parttime</option>
-                                </select>
-                             </p>
-                        <p><input type ="submit" value="Submit" style="background-color:rgba(214, 214, 194, 0.2); padding: 5px; width: 10px;
-                            height:30px; width: 80px; color:black; text-size:24; font-weight: bold; border:none;font-family: candara;"/>
-                        </p>
-                  </form>
-                </div>
-              <div>
-          </div>
-    </div>
+
+                <p>Age group: <br>
+                          <select name="age_group" style="font-family: candara;"><br>
+                          <option value = "15 to 24 years">From 15 to 24 years</option>
+                          <option value = "25 to 54 years">From 25 to 54 years</option>
+                          <option value = "55 years and over">From 55 years and over</option>
+                          </select>
+                </p>
+                <p>Gender:<br>
+                        <input type="radio" name="gender" id="Female" value="True" required/>
+                        <label style="font-size: 13px; font-family:candara;">1 - Female</label><br />
+                        <input type="radio" name="gender" id="Male" value="False" required/>
+                        <label style="font-size: 13px;font-family:candara;">0 - Male</label><br />
+                </p>
+
+
+                <p>Type of work:<br>
+                          <select name="fulltime_parttime" style="font-family: candara;">
+                          <option value = "Full-time employees">Fulltime Employment</option>
+                          <option value = "Part-time employees">Parttime Employment</option>
+                        </select>
+                </p>
+                <p><input type ="submit" value="SUBMIT" style="background-color:rgba(0, 0, 139, 0.2); padding: 10px 30px;border-radius: 50%;
+                            height:60px; width: 100px; color:black; text-size:24; font-weight: bold; border:none;font-family: candara;"/>
+                </p>
+              </form>
+            </div>
+
+
+<script type="text/javascript" src="static/js/jquery-3.4.1.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+
+<!---<script src="static/js/bootstrap.js"></script>--->
+
   </body>
 </html>

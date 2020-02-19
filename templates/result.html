@@ -2,18 +2,28 @@
 <html lang="en" dir="ltr">
 <html>
   <head>
-    <title>Canadian Employment by category- Result</title>
-      <style>
+    <link rel="stylesheet" href= "{{url_for('static', filename = 'css/bootstrap.css')}}">
+    <title>Canadian Employment</title>
+    <style>
           body {
              color: black;
              font-family: candara;
              font-weight: bold;
              text-align:center;
          }
+      p.groove {border-style: groove;}
     </style>
   </head>
 <body>
-  <h2>Canadian Employment by category<br></h2>
-      <h3> People to be employed ${{employed_value}}</h3>
+
+  <img src="static/img/top10employers2020.png"  width="1000" height="300">
+
+  <h1 align="center"  style="color: rgba(0, 0, 139, 1);">Canadian Employment by category - Result</h1>
+   <br>
+  <h3 style="color: rgba(0, 0, 139, 1);"> People to be employed next year : {{employed_value}} thousands</h3>
+
+
+
+
  </body>
 </html>

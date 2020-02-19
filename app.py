@@ -16,19 +16,18 @@ def index():
 def result():
     args = request.form
     data = pd.DataFrame({
+        'occupation': [args.get('occupation')],
+        'gender' : [args.get('gender')],
         'fulltime_parttime': [args.get('fulltime_parttime')],
-        'age_group' : [args.get('age_group')],
-        'gender' : [(args.get('gender'))],
-        'occupation': [args.get('occupation')]
+        'age_group' : [args.get('age_group')]
         })
 
-    employed_value = pipe.predict(data)
+    employed_value = int(pipe.predict(data))
 
-    employed_value = employed_value * 1000
 
-    employed_value = numpy.round(employed_value)
+    #employed_value = numpy.round(employed_value) * 1000
 
-    return render_template('result.html', employed_value = employed_value)
+    return render_template('result.html',  employed_value = employed_value)
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
